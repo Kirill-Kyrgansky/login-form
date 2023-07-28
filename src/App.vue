@@ -1,26 +1,86 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <section class="section">
+    <div class="container">
+      <form @submit.prevent>
+        <custom-input
+          v-model="user.login"
+          :placeholder="'Логин'"
+          :label="'login'"
+          :type="'text'"
+        />
+        <div>
+          <custom-input
+            v-if="!isVisiblePassword"
+            v-model="user.password"
+            :placeholder="'Пароль'"
+            :label="'password'"
+            :type="'password'"
+          />
+        </div>
+        <div>
+
+        </div>
+        <button type="submit">Войти</button>
+      </form>
+    </div>
+  </section>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
+<script lang="ts">
+import { defineComponent } from "vue";
+import CustomInput from "@/components/customInput.vue";
+import { IUser } from "@/interface/IUser";
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
+
+export default defineComponent({
+
+  components: { CustomInput },
+  emits: ["type"],
+  data() {
+    const user: IUser = {
+      login: "",
+      password: ""
+    };
+    const isVisiblePassword: boolean = false;
+    return {
+      user: user,
+      isVisiblePassword: isVisiblePassword
+    };
+  },
+  methods: {
   }
-}
+});
 </script>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+@mixin horizontal-center {
+  display: flex;
+  justify-content: center;
+}
+
+$main-color: #985ACE;
+
+body {
+  padding: 50px 0 70px 0;
+  position: relative;
+  background-color: $main-color;
+}
+
+.section {
+  padding: 0 30px;
+  max-width: 1440px;
+  margin: auto;
+  position: relative;
+  @include horizontal-center();
+
+}
+
+.container {
+  max-width: 460px;
+  @include horizontal-center();
+  border-radius: 30px;
+  background: #FFF;
+  box-shadow: 0 4px 17px 0 rgba(0, 0, 0, 0.17);
+  padding: 90px;
 }
 </style>
