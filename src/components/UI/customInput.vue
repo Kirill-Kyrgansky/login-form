@@ -2,12 +2,12 @@
   <div class="custom-input">
     <label :for="label">
       <input
-        :id="label"
-        class="custom-input__input"
-        :class="confirm ? 'success' : 'error-form'"
-        :type="inputType"
-        :value="modelValue"
-        @input="handleInput"
+          :id="label"
+          class="custom-input__input"
+          :class="inputClass"
+          :type="inputType"
+          :value="modelValue"
+          @input="handleInput($event)"
       />
     </label>
     <span class="custom-input__label">{{ placeholder }}</span>
@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watch } from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   props: {
@@ -70,35 +70,42 @@ export default defineComponent({
       let txt = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return txt.test(this.modelValue);
     },
-    // eslint-disable-next-line vue/return-in-computed-property
-    // validateInput() {
-    //   const emailError = this.label === "email" && !this.emailValidation;
-    //   const passwordError = this.label === "password" && this.modelValue.length < 6;
-    //   const confirmPasswordError =
-    //     this.label === "passwordConfirm" && this.errorPassword;
-    //
-    //   // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-    //   this.confirm = !(emailError || passwordError || confirmPasswordError);
-    //   this.$emit("inputError", this.confirm);
-    // },
+    inputClass() {
+      const emailError = this.label === "email" && !this.emailValidation;
+      const passwordError = this.label === "password" && this.modelValue.length < 6;
+      const confirmPasswordError = this.label === "passwordConfirm" && this.errorPassword;
+
+      if (emailError || passwordError || confirmPasswordError) {
+        this.confirm = false
+        return "error-form";
+      } else {
+        this.confirm = true
+        this.$emit("inputError", this.confirm);
+        return "success";
+      }
+      // this.$emit("inputError", this.confirm);
+
+    },
   },
 
   methods: {
-    validateInput() {
+    handleInput($event: any) {
       const emailError = this.label === "email" && !this.emailValidation;
       const passwordError = this.label === "password" && this.modelValue.length < 6;
       const confirmPasswordError =
         this.label === "passwordConfirm" && this.errorPassword;
-
       this.confirm = !(emailError || passwordError || confirmPasswordError);
+      this.$emit("update:modelValue", $event.target.value);
+
       this.$emit("inputError", this.confirm);
     },
+
     changeVisible() {
       this.isVisiblePassword = !this.isVisiblePassword;
     },
-    handleInput($event: any) {
-      this.validateInput();
-      this.$emit("update:modelValue", $event.target.value);
-    },}
+    // handleInput($event: any) {
+    //   this.validateInput();
+    // },
+  }
 });
 </script>

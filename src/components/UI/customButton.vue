@@ -1,13 +1,13 @@
 <template>
-    <button
-:type="type"
-            class="button-wrap__button pointer">
-      <slot></slot>
-    </button>
+  <button
+      :type="type"
+      class="button-wrap__button pointer">
+    <slot></slot>
+  </button>
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 
 export default defineComponent({
   props: {
@@ -18,3 +18,6 @@ export default defineComponent({
   }
 })
 </script>
+<style>
+
+</style>
