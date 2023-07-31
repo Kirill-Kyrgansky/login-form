@@ -1,0 +1,10 @@
+$opacity-active: 0.8;
+
+@mixin horizontal-center {
+  display: flex;
+  justify-content: center;
+}
+
+@mixin main-color($opacity: 1) {
+  background-color: rgba(152, 90, 206, $opacity)
+}

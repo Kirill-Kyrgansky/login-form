@@ -15,23 +15,21 @@
     />
   </div>
   <custom-button type="submit" @click="singIn">Войти</custom-button>
-  <forgot-password/>
 </template>
 
 <script lang="ts">
-import {defineComponent} from "vue";
-import axios from "axios";
-import {IUser} from "@/interface/IUser";
-import CustomInput from "@/components/UI/customInput.vue"
-import CustomButton from "@/components/UI/customButton.vue"
-import ForgotPassword from "@/components/UI/forgotPassword.vue";
+import { defineComponent } from "vue";
+import axios, { AxiosResponse } from "axios";
+import { IUser } from "@/interface/IUser";
+import CustomInput from "@/components/UI/customInput.vue";
+import CustomButton from "@/components/UI/customButton.vue";
 
 export default defineComponent({
-  components: {ForgotPassword, CustomInput, CustomButton},
+  components: { CustomInput, CustomButton },
   props: {
     apiKey: {
       type: String,
-      default: ''
+      default: ""
     }
   },
   data() {
@@ -48,19 +46,29 @@ export default defineComponent({
 
   methods: {
     async singIn() {
-      await axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${this.apiKey}`, this.user)
-          .then(value => {
-            console.log(value)
-          })
-          .catch(err => {
-            console.error(err)
-          })
+      if (this.user.password.length < 6) {
+        alert("Пароль не может быть меньше 6 символов");
+      } else if (this.user.email.length === 0) {
+        alert("Поле \"E-mail\" не может быть пустым");
+      } else {
+        try {
+          const response: AxiosResponse = await axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${this.apiKey}`, this.user, {
+          });
+          if (response.status >= 200 && response.status < 300) {
+            alert("Вы успешно вошли в систему");
+          }
+        } catch (err: any) {
+          if (err.response && err.response.data && err.response.data.error) {
+            if (err.response.data.error.message === "INVALID_EMAIL") {
+              alert("Некорректный формат E-mail");
+            } else if (err.response.data.error.message === "EMAIL_NOT_FOUND") {
+              alert("Вы не зарегистрированы в системе");
+            }
+          }
+        }
+      }
     }
   }
 
 })
 </script>
-
-<style scoped>
-
-</style>

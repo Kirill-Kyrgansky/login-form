@@ -1,0 +1,30 @@
+button {
+  border: none;
+}
+
+.button-wrap__button {
+  color: #FFF;
+  text-align: center;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-transform: uppercase;
+  border-radius: 7px;
+  @include main-color();
+  width: 100%;
+  padding: 15px 15px;
+  transition: transform 0.7s;
+
+  &:hover {
+    @include main-color($opacity-active);
+    animation: pulseAnimation 1s infinite;
+  }
+
+  &:active {
+    transform: scale(1);
+    @include main-color();
+  }
+}
+
+
