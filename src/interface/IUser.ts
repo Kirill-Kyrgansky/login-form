@@ -1,4 +1,6 @@
 export interface IUser {
-  login: string;
-  password: string;
+    email: string;
+    password: string;
+    returnSecureToken: boolean
+
 }

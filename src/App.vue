@@ -1,53 +1,36 @@
 <template>
-  <section class="section">
+  <section class="section form-wrap">
     <div class="container">
+      <div class="container link">
+        <p class="pointer" :class="{'strong': !isSingUp}" @click="changeForm(false)">Вход</p>
+        <p class="pointer" :class="{'strong': isSingUp}" @click="changeForm(true)">Регистрация</p>
+      </div>
       <form @submit.prevent>
-        <custom-input
-          v-model="user.login"
-          :placeholder="'Логин'"
-          :label="'login'"
-          :type="'text'"
-        />
-        <div>
-          <custom-input
-            v-if="!isVisiblePassword"
-            v-model="user.password"
-            :placeholder="'Пароль'"
-            :label="'password'"
-            :type="'password'"
-          />
-        </div>
-        <div>
-
-        </div>
-        <button type="submit">Войти</button>
+        <sing-up v-if="isSingUp" :api-key="apiKey"/>
+        <sing-in v-else :api-key="apiKey"/>
       </form>
     </div>
   </section>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import CustomInput from "@/components/customInput.vue";
-import { IUser } from "@/interface/IUser";
+import {defineComponent} from "vue";
+import SingIn from "@/components/singIn.vue";
+import SingUp from "@/components/singUp.vue";
 
 
 export default defineComponent({
-
-  components: { CustomInput },
-  emits: ["type"],
+  components: {SingUp, SingIn},
   data() {
-    const user: IUser = {
-      login: "",
-      password: ""
-    };
-    const isVisiblePassword: boolean = false;
     return {
-      user: user,
-      isVisiblePassword: isVisiblePassword
-    };
+      isSingUp: false,
+      apiKey: 'AIzaSyAjNfkPGxW7MblOHBEgq7Kf4WwxnQdFAaY'
+    }
   },
   methods: {
+    changeForm(value: boolean) {
+      this.isSingUp = value
+    }
   }
 });
 </script>
@@ -76,11 +59,30 @@ body {
 }
 
 .container {
-  max-width: 460px;
-  @include horizontal-center();
+}
+
+.form-wrap {
   border-radius: 30px;
   background: #FFF;
   box-shadow: 0 4px 17px 0 rgba(0, 0, 0, 0.17);
   padding: 90px;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.strong {
+  font-weight: bold;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.link {
+  display: flex;
+  justify-content: space-between;
+
 }
 </style>
