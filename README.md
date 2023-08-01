@@ -1,13 +1,13 @@
-# test-etable
+# test-eTable
 
-## Project setup
+## Copying a project
 ```
-npm install
+docker pull kyrgansky/login-form-image:latest
 ```
 
 ### Compiles and hot-reloads for development
 ```
-npm run serve
+docker run -dp 4000:80 --name login-form --rm  kyrgansky/login-form-image
 ```
 
 ### Compiles and minifies for production
@@ -15,12 +15,5 @@ npm run serve
 npm run build
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-
-docker build -t kyrgansky/login-form-image:latest .
-
-docker run -dp 4000:80 --name login-form --rm  kyrgansky/login-form-image
 
 
-docker push kyrgansky/login-form-image
