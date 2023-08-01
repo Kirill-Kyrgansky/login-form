@@ -103,9 +103,6 @@ export default defineComponent({
     changeVisible() {
       this.isVisiblePassword = !this.isVisiblePassword;
     },
-    // handleInput($event: any) {
-    //   this.validateInput();
-    // },
   }
 });
 </script>

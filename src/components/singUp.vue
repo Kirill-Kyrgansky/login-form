@@ -24,9 +24,13 @@
       @input-error="isPasswordConfirmError"
 
   />
-  <custom-button v-if="!isLoading"  type="submit" @click="singUp">Регистрация</custom-button>
+  <custom-button
+      v-if="!isLoading"
+      type="submit"
+      @click="singUp"
+  >Регистрация
+  </custom-button>
   <loading-spinner v-else/>
-
 </template>
 
 <script lang="ts">
@@ -86,7 +90,7 @@ export default defineComponent({
         alert('Некорректный пароль')
       } else if (this.errorPassword) {
         alert('Пароли не совпадают')
-      } else  {
+      } else {
         this.isLoading = true
         try {
           const response: AxiosResponse = await axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${this.apiKey}`, this.user, {});

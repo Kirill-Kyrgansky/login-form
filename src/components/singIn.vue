@@ -16,7 +16,12 @@
         @input-error="isPasswordError"
     />
   </div>
-  <custom-button v-if="!isLoading" type="submit" @click="singIn">Войти</custom-button>
+  <custom-button
+      v-if="!isLoading"
+      type="submit"
+      @click="singIn"
+  >Войти
+  </custom-button>
   <loading-spinner v-else/>
 </template>
 
@@ -84,6 +89,5 @@ export default defineComponent({
       }
     }
   }
-
 })
 </script>
