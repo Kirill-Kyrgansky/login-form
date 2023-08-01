@@ -64,18 +64,22 @@ export default defineComponent({
   },
   computed: {
     inputType() {
-      return this.isVisiblePassword ? "text" : this.type === "password" ? "password" : "text";
+      return this.isVisiblePassword ? "text" : this.type === "password" ? "password" : "email";
     },
     emailValidation(): boolean {
       let txt = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return txt.test(this.modelValue);
     },
-    inputClass() {
+
+    checkInput() {
       const emailError = this.label === "email" && !this.emailValidation;
       const passwordError = this.label === "password" && this.modelValue.length < 6;
       const confirmPasswordError = this.label === "passwordConfirm" && this.errorPassword;
+      return { emailError, passwordError, confirmPasswordError }
+    },
 
-      if (emailError || passwordError || confirmPasswordError) {
+    inputClass() {
+      if (this.checkInput.emailError || this.checkInput.passwordError || this.checkInput.confirmPasswordError) {
         this.confirm = false
         return "error-form";
       } else {
@@ -83,20 +87,13 @@ export default defineComponent({
         this.$emit("inputError", this.confirm);
         return "success";
       }
-      // this.$emit("inputError", this.confirm);
-
     },
   },
 
   methods: {
     handleInput($event: any) {
-      const emailError = this.label === "email" && !this.emailValidation;
-      const passwordError = this.label === "password" && this.modelValue.length < 6;
-      const confirmPasswordError =
-        this.label === "passwordConfirm" && this.errorPassword;
-      this.confirm = !(emailError || passwordError || confirmPasswordError);
+      this.confirm = !(this.checkInput.emailError || this.checkInput.passwordError || this.checkInput.confirmPasswordError);
       this.$emit("update:modelValue", $event.target.value);
-
       this.$emit("inputError", this.confirm);
     },
 

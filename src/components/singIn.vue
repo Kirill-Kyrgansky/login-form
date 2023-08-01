@@ -3,7 +3,7 @@
       v-model="user.email"
       :placeholder="'E-mail'"
       :label="'email'"
-      :type="'email'"
+      type="email"
       @input-error="isEmailError"
   />
   <div>
